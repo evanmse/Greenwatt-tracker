@@ -1,0 +1,74 @@
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #eef5ee;
+}
+
+.appbar {
+    -fx-background-color: linear-gradient(to right, #2e7d32, #66bb6a);
+}
+.appbar .brand {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+.appbar .label {
+    -fx-text-fill: white;
+}
+
+.section-title {
+    -fx-text-fill: #1b5e20;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.form-panel {
+    -fx-background-color: white;
+    -fx-border-color: #c8e6c9;
+    -fx-border-width: 0 1 0 0;
+}
+
+.kpi {
+    -fx-background-color: white;
+    -fx-padding: 18;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0, 0, 2);
+}
+.kpi-label { -fx-text-fill: #555; }
+.kpi-value {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2e7d32;
+}
+
+.button {
+    -fx-background-color: #2e7d32;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 7 14;
+    -fx-cursor: hand;
+}
+.button:hover { -fx-background-color: #1b5e20; }
+
+.tab-pane .tab {
+    -fx-background-color: #c8e6c9;
+}
+.tab-pane .tab:selected {
+    -fx-background-color: #2e7d32;
+}
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+.anomalie-info     { -fx-text-fill: #1565c0; }
+.anomalie-alerte   { -fx-text-fill: #ef6c00; -fx-font-weight: bold; }
+.anomalie-critique { -fx-text-fill: #c62828; -fx-font-weight: bold; }
+
+.reco-elevee   { -fx-text-fill: #c62828; -fx-font-weight: bold; }
+.reco-moyenne  { -fx-text-fill: #ef6c00; }
+.reco-info     { -fx-text-fill: #6a4c00; }
+
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 6;
+}

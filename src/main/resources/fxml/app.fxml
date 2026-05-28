@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fr.greenwatt.controller.AppController"
+            prefHeight="800" prefWidth="1280">
+
+    <top>
+        <HBox spacing="20" alignment="CENTER_LEFT" styleClass="appbar">
+            <padding><Insets top="14" right="20" bottom="14" left="20"/></padding>
+            <Label text="🌱 GreenWatt Tracker" styleClass="brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblMeteo" text="☁ Météo non chargée"/>
+            <Button text="☁ Actualiser météo" onAction="#onMeteo"/>
+            <Button fx:id="btnIoT" text="🛰 Démarrer capteurs IoT" onAction="#onToggleIoT"/>
+            <Button text="🔄" onAction="#rafraichirTout"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+
+            <!-- ========== ONGLET 1 : TABLEAU DE BORD ========== -->
+            <Tab text="📊 Tableau de bord">
+                <VBox spacing="15">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <HBox spacing="15">
+                        <VBox styleClass="kpi" HBox.hgrow="ALWAYS">
+                            <Label text="Bâtiments suivis" styleClass="kpi-label"/>
+                            <Label fx:id="lblNbBatiments" text="0" styleClass="kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="kpi" HBox.hgrow="ALWAYS">
+                            <Label text="Consommation annuelle" styleClass="kpi-label"/>
+                            <Label fx:id="lblConsoTotale" text="0 kWh" styleClass="kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="kpi" HBox.hgrow="ALWAYS">
+                            <Label text="Coût estimé" styleClass="kpi-label"/>
+                            <Label fx:id="lblCoutTotal" text="0 €" styleClass="kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="kpi" HBox.hgrow="ALWAYS">
+                            <Label text="Empreinte carbone" styleClass="kpi-label"/>
+                            <Label fx:id="lblCO2Total" text="0 kg" styleClass="kpi-value"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="💰 Tarification :"/>
+                        <ComboBox fx:id="cmbStrategie" onAction="#onChangerStrategie"/>
+                    </HBox>
+
+                    <HBox spacing="15" VBox.vgrow="ALWAYS">
+                        <PieChart fx:id="pieParType" title="Consommation par type de bâtiment"
+                                  HBox.hgrow="ALWAYS"/>
+                        <BarChart fx:id="barTop5" title="Top 5 consommateurs" HBox.hgrow="ALWAYS">
+                            <xAxis><CategoryAxis label="Bâtiment"/></xAxis>
+                            <yAxis><NumberAxis label="kWh / an"/></yAxis>
+                        </BarChart>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- ========== ONGLET 2 : BÂTIMENTS ========== -->
+            <Tab text="🏢 Bâtiments">
+                <HBox spacing="0">
+                    <VBox spacing="10" prefWidth="320" styleClass="form-panel">
+                        <padding><Insets top="20" right="15" bottom="20" left="15"/></padding>
+                        <Label text="➕ Nouveau bâtiment" styleClass="section-title"/>
+                        <ComboBox fx:id="cmbTypeBatiment" promptText="Type" maxWidth="Infinity"/>
+                        <TextField fx:id="txtDenomination" promptText="Dénomination"/>
+                        <TextField fx:id="txtVille" promptText="Ville"/>
+                        <ComboBox fx:id="cmbZone" promptText="Zone climatique" maxWidth="Infinity"/>
+                        <TextField fx:id="txtSurface" promptText="Surface (m²)"/>
+                        <TextField fx:id="txtOccupants" promptText="Occupants"/>
+                        <ComboBox fx:id="cmbSource" promptText="Source d'énergie" maxWidth="Infinity"/>
+                        <Button text="Créer" onAction="#onCreerBatiment" maxWidth="Infinity"/>
+                        <Separator/>
+                        <HBox spacing="8">
+                            <Button text="🗑 Supprimer" onAction="#onSupprimerBatiment" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                            <Button text="📋 Dupliquer" onAction="#onDupliquerBatiment" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        </HBox>
+                    </VBox>
+
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                        <Label text="🏢 Bâtiments enregistrés" styleClass="section-title"/>
+                        <TableView fx:id="tableBatiments" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colId"      text="ID"        prefWidth="60"/>
+                                <TableColumn fx:id="colType"    text="Type"      prefWidth="160"/>
+                                <TableColumn fx:id="colDenom"   text="Nom"       prefWidth="220"/>
+                                <TableColumn fx:id="colSurface" text="m²"        prefWidth="100"/>
+                                <TableColumn fx:id="colConso"   text="kWh / an"  prefWidth="120"/>
+                                <TableColumn fx:id="colCO2"     text="kg CO₂"    prefWidth="120"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </HBox>
+            </Tab>
+
+            <!-- ========== ONGLET 3 : MESURES ========== -->
+            <Tab text="📈 Mesures">
+                <VBox spacing="15">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                    <Label text="📊 Ajouter une mesure" styleClass="section-title"/>
+                    <HBox spacing="10">
+                        <ComboBox fx:id="cmbBatimentMesure" promptText="Bâtiment" prefWidth="240"/>
+                        <ComboBox fx:id="cmbCategorie" promptText="Catégorie" prefWidth="200"/>
+                        <TextField fx:id="txtQuantite" promptText="Quantité" prefWidth="120"/>
+                        <Button text="Ajouter" onAction="#onAjouterMesure"/>
+                    </HBox>
+                    <Label text="🗒 Historique des mesures" styleClass="section-title"/>
+                    <ListView fx:id="listMesures" VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </Tab>
+
+            <!-- ========== ONGLET 4 : RAPPORTS ========== -->
+            <Tab text="📝 Rapports">
+                <SplitPane orientation="HORIZONTAL" dividerPositions="0.5">
+                    <VBox spacing="10">
+                        <padding><Insets top="20" right="15" bottom="20" left="20"/></padding>
+                        <Label text="📤 Exports" styleClass="section-title"/>
+                        <HBox spacing="10">
+                            <Button text="JSON"     onAction="#onExporterJson"/>
+                            <Button text="CSV"      onAction="#onExporterCsv"/>
+                            <Button text="Markdown" onAction="#onGenererMarkdown"/>
+                        </HBox>
+                        <TextArea fx:id="txtRapportMarkdown" prefHeight="250" wrapText="true"/>
+                        <Label text="⚠ Anomalies détectées" styleClass="section-title"/>
+                        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                            <VBox fx:id="panelAnomalies" spacing="4">
+                                <padding><Insets top="6" right="6" bottom="6" left="6"/></padding>
+                            </VBox>
+                        </ScrollPane>
+                    </VBox>
+                    <VBox spacing="10">
+                        <padding><Insets top="20" right="20" bottom="20" left="15"/></padding>
+                        <Label text="� Recommandations d'économies" styleClass="section-title"/>
+                        <ScrollPane fitToWidth="true" prefHeight="230">
+                            <VBox fx:id="panelRecommandations" spacing="4">
+                                <padding><Insets top="6" right="6" bottom="6" left="6"/></padding>
+                            </VBox>
+                        </ScrollPane>
+                        <Label text="�🔔 Journal d'événements (Observer)" styleClass="section-title"/>
+                        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                            <VBox fx:id="panelEvenements" spacing="3">
+                                <padding><Insets top="6" right="6" bottom="6" left="6"/></padding>
+                            </VBox>
+                        </ScrollPane>
+                    </VBox>
+                </SplitPane>
+            </Tab>
+
+        </TabPane>
+    </center>
+</BorderPane>

@@ -1,0 +1,19 @@
+package fr.greenwatt.utils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+/** Fabrique d'ObjectMapper Jackson configuré. */
+public final class JsonMapperFactory {
+
+    private JsonMapperFactory() {}
+
+    public static ObjectMapper creer() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        return mapper;
+    }
+}
